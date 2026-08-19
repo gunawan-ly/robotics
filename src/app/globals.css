@@ -110,6 +110,27 @@ canvas { display: block; }
   background: linear-gradient(90deg, #22d3ee, #818cf8);
   animation: slide 1.1s ease-in-out infinite;
 }
+.loading-hint {
+  margin-top: 14px;
+  max-width: 320px;
+  font-size: 11.5px;
+  line-height: 1.6;
+  letter-spacing: 0.3px;
+  color: var(--text-dim);
+}
+.loading-action {
+  margin-top: 16px;
+  padding: 8px 22px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: #e2e8f0;
+  font-size: 12px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: opacity 200ms ease;
+}
+.loading-action:hover { opacity: 0.8; }
 
 /* ---------- activity chips ---------- */
 .chip {

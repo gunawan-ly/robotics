@@ -53,6 +53,7 @@ export default function AIRoom({ onReady, active }: AIRoomProps) {
       dpr={[1, 1.75]}
       gl={{ antialias: true, powerPreference: "high-performance" }}
       camera={{ fov: 34, near: 0.1, far: 90, position: [11.6, 12.6, 14.4] }}
+      onCreated={() => onReady?.()}
     >
       <color attach="background" args={["#0d1017"]} />
       <fog attach="fog" args={["#0d1017", 36, 80]} />
