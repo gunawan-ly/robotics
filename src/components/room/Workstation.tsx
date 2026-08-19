@@ -1,11 +1,11 @@
 "use client";
 
-import { Html } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 import type { ProviderConfig } from "@/config/providers";
+import NameplateAnchor from "./NameplateAnchor";
 
 /**
  * One workstation: desk, chair, monitor + nameplate (PRD §4).
@@ -111,15 +111,8 @@ export default function Workstation({ config, active }: { config: ProviderConfig
         </mesh>
       </group>
 
-      {/* nameplate */}
-      <Html position={[0, 1.44, 0.08]} center transform distanceFactor={9} style={{ pointerEvents: "none" }}>
-        <div className="world-label">
-          <div className="plate-name" style={{ color: config.glow }}>
-            {config.name}
-          </div>
-          {config.role && <div className="plate-role">{config.role}</div>}
-        </div>
-      </Html>
+      {/* nameplate anchor — 2D clamped label is drawn by NameplateLayer */}
+      <NameplateAnchor id={config.id} worldPos={[config.deskPosition[0], 1.5, config.deskPosition[1]]} />
     </group>
   );
 }

@@ -35,7 +35,7 @@ function FixedCamera({ onReady }: { onReady?: () => void }) {
     const HALF_ANGLE = (34 * Math.PI) / 360; // vertical fov 34 deg
     const desktopDist = 17.5;
     // Cover robot centers (±3.67) plus body width with a small margin.
-    const needed = aspect < 1 ? 4.15 / (Math.tan(HALF_ANGLE) * aspect) : desktopDist;
+    const needed = aspect < 1 ? 5.0 / (Math.tan(HALF_ANGLE) * aspect) : desktopDist;
     const dist = Math.max(desktopDist, needed);
     camera.position.copy(base.clone().multiplyScalar(dist / baseLen));
     camera.lookAt(0, 1.05, 0);

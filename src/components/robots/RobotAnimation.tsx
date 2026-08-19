@@ -55,11 +55,12 @@ export function useRobotAnimation(
     }
 
     // --- horizontal position: idle spot <-> chair spot ---
+    // Deliberately gentle damping so sit/stand reads as a calm glide.
     const sitting = phase === "sitting" || phase === "working" || phase === "success";
-    m.moveX = damp(m.moveX, sitting ? chairLocal[0] : 0, 4.5, dt);
-    m.moveZ = damp(m.moveZ, sitting ? chairLocal[1] : 0, 4.5, dt);
-    m.rootY = damp(m.rootY, sitting ? 0.08 : 0, 6, dt);
-    m.bodyLeanX = damp(m.bodyLeanX, sitting ? 0.13 : 0.02, 6, dt);
+    m.moveX = damp(m.moveX, sitting ? chairLocal[0] : 0, 3.2, dt);
+    m.moveZ = damp(m.moveZ, sitting ? chairLocal[1] : 0, 3.2, dt);
+    m.rootY = damp(m.rootY, sitting ? 0.09 : 0, 4, dt);
+    m.bodyLeanX = damp(m.bodyLeanX, sitting ? 0.13 : 0.02, 4.5, dt);
 
     // --- head targets ---
     let headYawT = 0;
@@ -81,23 +82,24 @@ export function useRobotAnimation(
     } else {
       headPitchT = -0.04;
     }
-    m.headYaw = damp(m.headYaw, headYawT * S, 6, dt);
-    m.headPitch = damp(m.headPitch, headPitchT * S, 6, dt);
+    m.headYaw = damp(m.headYaw, headYawT * S, 4.4, dt);
+    m.headPitch = damp(m.headPitch, headPitchT * S, 4.4, dt);
 
     // --- arms / hands ---
     const working = phase === "working";
     if (working) {
-      const typingA = Math.sin(time * 6.5);
-      const typingB = Math.sin(time * 6.5 + 1.7);
-      m.armLX = damp(m.armLX, -0.42, 5, dt);
-      m.armRX = damp(m.armRX, -0.4, 5, dt);
-      m.handLY = damp(m.handLY, 0.05 + 0.045 * typingA, 10, dt);
-      m.handRY = damp(m.handRY, 0.05 + 0.045 * typingB, 10, dt);
+      // Calm keyboard bobbing — slower rate, smaller amplitude, soft damping.
+      const typingA = Math.sin(time * 4.6);
+      const typingB = Math.sin(time * 4.6 + 1.9);
+      m.armLX = damp(m.armLX, -0.38, 4, dt);
+      m.armRX = damp(m.armRX, -0.36, 4, dt);
+      m.handLY = damp(m.handLY, 0.04 + 0.03 * typingA, 7, dt);
+      m.handRY = damp(m.handRY, 0.04 + 0.03 * typingB, 7, dt);
     } else {
-      m.armLX = damp(m.armLX, -0.12 + 0.03 * Math.sin(time * 0.8), 5, dt);
-      m.armRX = damp(m.armRX, -0.12 - 0.03 * Math.sin(time * 0.8), 5, dt);
-      m.handLY = damp(m.handLY, 0, 8, dt);
-      m.handRY = damp(m.handRY, 0, 8, dt);
+      m.armLX = damp(m.armLX, -0.12 + 0.03 * Math.sin(time * 0.8), 4, dt);
+      m.armRX = damp(m.armRX, -0.12 - 0.03 * Math.sin(time * 0.8), 4, dt);
+      m.handLY = damp(m.handLY, 0, 6, dt);
+      m.handRY = damp(m.handRY, 0, 6, dt);
     }
 
     // --- visor: state brightness + occasional blink ---
