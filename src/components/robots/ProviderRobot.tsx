@@ -77,8 +77,9 @@ export default function ProviderRobot({ config }: { config: ProviderConfig }) {
 
   return (
     <group position={[config.position[0], 0, config.position[1]]} rotation-y={config.rotation}>
-      <RobotModel rig={rig} config={config} phase={phase} reduced={reduced} chairLocal={chairLocal} />
-      <FloatingThought phrases={config.phrases} visible={phase === "working"} />
+      <RobotModel rig={rig} config={config} phase={phase} reduced={reduced} chairLocal={chairLocal}>
+        <FloatingThought phrases={config.phrases} visible={phase === "working"} />
+      </RobotModel>
     </group>
   );
 }

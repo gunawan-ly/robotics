@@ -1,7 +1,7 @@
 "use client";
 
 import { RoundedBox } from "@react-three/drei";
-import { createRef, type RefObject } from "react";
+import { createRef, type ReactNode, type RefObject } from "react";
 import * as THREE from "three";
 
 import type { ProviderConfig } from "@/config/providers";
@@ -40,13 +40,16 @@ interface RobotModelProps {
   reduced: boolean;
   /** Chair position in the robot's local frame (movement target when sitting). */
   chairLocal: [number, number];
+  /** Optional overlay content (e.g. FloatingThought) rendered inside the root
+   *  group so it moves together with the robot when it sits down. */
+  children?: ReactNode;
 }
 
 /**
  * One base robot model, differentiated per provider by color only (PRD §11).
  * Origin of the root group is the idle spot on the floor; the robot faces +Z.
  */
-export default function RobotModel({ rig, config, phase, reduced, chairLocal }: RobotModelProps) {
+export default function RobotModel({ rig, config, phase, reduced, chairLocal, children }: RobotModelProps) {
   useRobotAnimation(rig, phase, reduced, chairLocal);
 
   const c = config;
@@ -149,6 +152,9 @@ export default function RobotModel({ rig, config, phase, reduced, chairLocal }: 
           </mesh>
         </group>
       </group>
+
+      {/* overlay content follows the robot (root moves when sitting) */}
+      {children}
     </group>
   );
 }
