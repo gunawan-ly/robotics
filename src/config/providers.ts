@@ -5,6 +5,8 @@
  * Coordinate system: room ground plane is XZ, Y is up. Workstation-facing
  * conventions live in components; "rotation" is the Y rotation (radians)
  * that makes the robot face the room center (toward its desk/monitor).
+ * All layout coordinates are pre-scaled by SCENE_SCALE so the content
+ * fills the viewport on narrow screens.
  */
 export interface ProviderConfig {
   id: string;
@@ -38,6 +40,10 @@ const COMMON_PHRASES = [
   "Refining...",
 ];
 
+/** Overall room scale — smaller values = content fills the viewport better
+ *  on narrow (mobile) screens while staying centered (AGENTS.md §19). */
+export const SCENE_SCALE = 0.85;
+
 export const PROVIDERS: ProviderConfig[] = [
   {
     id: "deepseek",
@@ -56,9 +62,9 @@ export const PROVIDERS: ProviderConfig[] = [
       "Processing...",
       "Reviewing...",
     ],
-    position: [3.62, 4.32],
-    deskPosition: [3.55, 3.55],
-    chairPosition: [3.97, 3.97],
+    position: [3.08, 3.67],
+    deskPosition: [3.02, 3.02],
+    chairPosition: [3.37, 3.37],
     rotation: -2.35619449,
   },
   {
@@ -70,9 +76,9 @@ export const PROVIDERS: ProviderConfig[] = [
     accentDark: "#059669",
     glow: "#bbf7d0",
     phrases: COMMON_PHRASES,
-    position: [-4.32, 3.62],
-    deskPosition: [-3.55, 3.55],
-    chairPosition: [-3.97, 3.97],
+    position: [-3.67, 3.08],
+    deskPosition: [-3.02, 3.02],
+    chairPosition: [-3.37, 3.37],
     rotation: 0.78539816,
   },
   {
@@ -84,9 +90,9 @@ export const PROVIDERS: ProviderConfig[] = [
     accentDark: "#d97706",
     glow: "#fde68a",
     phrases: COMMON_PHRASES,
-    position: [-3.62, -4.32],
-    deskPosition: [-3.55, -3.55],
-    chairPosition: [-3.97, -3.97],
+    position: [-3.08, -3.67],
+    deskPosition: [-3.02, -3.02],
+    chairPosition: [-3.37, -3.37],
     rotation: 2.35619449,
   },
   {
@@ -98,9 +104,9 @@ export const PROVIDERS: ProviderConfig[] = [
     accentDark: "#7c3aed",
     glow: "#ddd6fe",
     phrases: COMMON_PHRASES,
-    position: [4.32, -3.62],
-    deskPosition: [3.55, -3.55],
-    chairPosition: [3.97, -3.97],
+    position: [3.67, -3.08],
+    deskPosition: [3.02, -3.02],
+    chairPosition: [3.37, -3.37],
     rotation: -0.78539816,
   },
   {
@@ -112,9 +118,9 @@ export const PROVIDERS: ProviderConfig[] = [
     accentDark: "#b91c1c",
     glow: "#fecaca",
     phrases: COMMON_PHRASES,
-    position: [0.55, 4.15],
-    deskPosition: [0, 3.55],
-    chairPosition: [0, 4.15],
+    position: [0.47, 3.53],
+    deskPosition: [0.0, 3.02],
+    chairPosition: [0.0, 3.53],
     rotation: Math.PI,
   },
 ] as const;

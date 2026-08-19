@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
 import { PROVIDERS } from "@/config/providers";
@@ -16,10 +16,32 @@ const AIRoom = dynamic(() => import("@/components/room/AIRoom"), {
   loading: () => null,
 });
 
+function usePortraitHint() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(orientation: portrait)");
+    const apply = () => {
+      if (mq.matches && window.innerWidth < 820) {
+        setShow(true);
+        const t = setTimeout(() => setShow(false), 6000);
+        return () => clearTimeout(t);
+      }
+    };
+    mq.addEventListener("change", apply);
+    const cleanup = apply();
+    return () => {
+      mq.removeEventListener("change", apply);
+      cleanup?.();
+    };
+  }, []);
+  return show;
+}
+
 export default function Home() {
   const [ready, setReady] = useState(false);
   const onReady = useCallback(() => setReady(true), []);
   const { active, status } = useRouterEvents();
+  const showHint = usePortraitHint();
 
   return (
     <main className="room-root">
@@ -29,6 +51,9 @@ export default function Home() {
       <StatusOverlay status={status} />
       <ActivityChips active={active} providers={PROVIDERS} />
       <DevSimulator providers={PROVIDERS} />
+      <div className={"rotate-hint " + (showHint ? "" : "off")} role="note">
+        Putar ponsel ke mode lanskap untuk tampilan ruangan yang lebih luas
+      </div>
     </main>
   );
 }

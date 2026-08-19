@@ -27,10 +27,17 @@ function FixedCamera({ onReady }: { onReady?: () => void }) {
   });
 
   useEffect(() => {
+    // Choose a distance so the platform (half-width ~4.5 world units) fills the
+    // frame: generous margin on desktop, as close as possible on portrait.
     const aspect = size.width / Math.max(1, size.height);
     const base = new THREE.Vector3(11.6, 12.6, 14.4);
-    const pull = aspect < 1 ? 1 + (1 - aspect) * 0.45 : 1;
-    camera.position.copy(base).multiplyScalar(pull);
+    const baseLen = base.length();
+    const HALF_ANGLE = (34 * Math.PI) / 360; // vertical fov 34 deg
+    const desktopDist = 17.5;
+    // Cover robot centers (±3.67) plus body width with a small margin.
+    const needed = aspect < 1 ? 4.15 / (Math.tan(HALF_ANGLE) * aspect) : desktopDist;
+    const dist = Math.max(desktopDist, needed);
+    camera.position.copy(base.clone().multiplyScalar(dist / baseLen));
     camera.lookAt(0, 1.05, 0);
     camera.updateProjectionMatrix();
   }, [camera, size]);

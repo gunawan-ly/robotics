@@ -3,6 +3,8 @@
 import { Html } from "@react-three/drei";
 import { useEffect, useState } from "react";
 
+import { SCENE_SCALE } from "@/config/providers";
+
 interface FloatingThoughtProps {
   phrases: string[];
   visible: boolean;
@@ -10,8 +12,9 @@ interface FloatingThoughtProps {
 
 /**
  * Small floating text above the robot while working (PRD §7 FLOATING TEXT).
- * Cycles through phrases with fade out -> change -> fade in.
- * Pure visual decoration — never model reasoning.
+ * Rendered as screen-space overlay (no transform) so it is always legible
+ * regardless of the robot's facing direction. Cycles phrases with a soft
+ * fade - change - fade-in. Pure decoration — never model reasoning.
  */
 export default function FloatingThought({ phrases, visible }: FloatingThoughtProps) {
   const [index, setIndex] = useState(0);
@@ -38,7 +41,12 @@ export default function FloatingThought({ phrases, visible }: FloatingThoughtPro
   const hidden = !visible || fading;
 
   return (
-    <Html position={[0, 1.5, 0]} center transform distanceFactor={8} style={{ pointerEvents: "none" }}>
+    <Html
+      position={[0, 1.62 * SCENE_SCALE, 0]}
+      center
+      zIndexRange={[60, 0]}
+      style={{ pointerEvents: "none" }}
+    >
       <div className={`thought ${hidden ? "fade" : ""}`} aria-hidden={hidden}>
         {phrases[index]}
       </div>
