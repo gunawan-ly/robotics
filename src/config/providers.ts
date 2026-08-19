@@ -62,10 +62,10 @@ export const PROVIDERS: ProviderConfig[] = [
       "Processing...",
       "Reviewing...",
     ],
-    position: [0.0, 1.88],
+    position: [0.0, 4.42],
     deskPosition: [0.0, 3.15],
-    chairPosition: [0.0, 2.53],
-    rotation: 0,
+    chairPosition: [0.0, 3.77],
+    rotation: Math.PI,
   },
   {
     id: "opencode",
